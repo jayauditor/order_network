@@ -1,0 +1,1073 @@
+<a href="https://forgotten_order_network.com">https://forgotten_order_network.com</a>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORDER OS // LOST STAR NODE</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:'Courier New',monospace;background:#000;color:#7ab8d4;user-select:none;}
+#os-root{width:100vw;height:100vh;background:#020408;position:relative;overflow:hidden;}
+#os-root::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.1) 2px,rgba(0,0,0,0.1) 4px);pointer-events:none;z-index:9000;}
+#os-root::after{content:'';position:fixed;inset:0;box-shadow:inset 0 0 120px rgba(0,0,0,0.7);pointer-events:none;z-index:9001;}
+#wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(10,25,50,0.8) 0%,transparent 60%),radial-gradient(ellipse at 80% 70%,rgba(5,15,35,0.9) 0%,transparent 60%),linear-gradient(135deg,#020408 0%,#040810 50%,#020408 100%);}
+#wallpaper-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:52px;color:rgba(15,35,60,0.4);letter-spacing:10px;white-space:nowrap;pointer-events:none;}
+
+/* LOGIN */
+#screen-login{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#010204;z-index:500;padding:20px;}
+.login-top{text-align:center;margin-bottom:36px;}
+.order-logo{font-size:11px;letter-spacing:6px;color:#0f3050;margin-bottom:6px;}
+.order-name{font-size:28px;letter-spacing:12px;color:#1a5a8a;margin-bottom:8px;}
+.order-sub{font-size:9px;letter-spacing:4px;color:#0a2030;}
+.login-box{border:1px solid #0f2535;padding:30px 40px;background:#04080f;width:380px;max-width:90vw;}
+.login-box h3{font-size:10px;letter-spacing:4px;color:#1a5a8a;margin-bottom:22px;text-align:center;}
+.login-field{margin-bottom:14px;}
+.login-field label{display:block;font-size:9px;letter-spacing:3px;color:#1a4060;margin-bottom:6px;}
+.login-field input{width:100%;background:#020408;border:1px solid #0f2535;color:#7ab8d4;padding:9px 12px;font-family:'Courier New',monospace;font-size:12px;outline:none;}
+.login-field input:focus{border-color:#2d6e96;}
+.login-btn{width:100%;background:#050e1c;border:1px solid #1a5a8a;color:#4a9abf;padding:10px;font-family:'Courier New',monospace;font-size:10px;letter-spacing:4px;cursor:pointer;margin-top:6px;}
+.login-btn:hover{background:#081525;color:#7ab8d4;}
+.login-err{font-size:10px;color:#7a1e1e;text-align:center;margin-top:12px;height:16px;}
+.login-hint{font-size:9px;color:#0f2535;text-align:center;margin-top:8px;letter-spacing:1px;}
+
+/* BOOT */
+#screen-boot{position:absolute;inset:0;display:none;flex-direction:column;align-items:flex-start;justify-content:center;background:#010204;padding:60px;z-index:400;overflow-y:auto;}
+.boot-log{width:100%;max-width:560px;font-size:11px;line-height:2.1;}
+.boot-bar-outer{width:560px;max-width:90%;margin-top:20px;border:1px solid #0f2535;height:8px;background:#010204;}
+.boot-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,#0f3050,#2d6e96);transition:width 0.2s;}
+
+/* DESKTOP */
+#screen-desktop{position:absolute;inset:0;display:none;}
+#desktop-icons{position:absolute;top:18px;left:18px;display:flex;flex-direction:column;gap:8px;z-index:10;}
+.dsk-icon{width:78px;height:78px;background:rgba(4,12,24,0.9);border:1px solid #0f2535;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:6px;transition:all 0.2s;}
+.dsk-icon:hover{border-color:#2d6e96;background:rgba(8,20,40,0.95);box-shadow:0 0 18px rgba(20,60,100,0.4);}
+.ico-sym{font-size:20px;color:#1a5a8a;}
+.dsk-icon:hover .ico-sym{color:#4a9abf;}
+.ico-lbl{font-size:7px;letter-spacing:2px;color:#1a4060;text-align:center;}
+.dsk-icon:hover .ico-lbl{color:#4a9abf;}
+
+/* TASKBAR */
+#taskbar{position:absolute;bottom:0;left:0;right:0;height:38px;background:rgba(4,8,16,0.97);border-top:1px solid #0f2535;display:flex;align-items:center;justify-content:space-between;padding:0 12px;z-index:200;}
+.tb-start{background:rgba(8,20,40,0.9);border:1px solid #1a3a52;color:#4a9abf;padding:5px 14px;font-family:'Courier New',monospace;font-size:10px;cursor:pointer;}
+.tb-start:hover{border-color:#2d6e96;}
+.tb-right{display:flex;align-items:center;gap:16px;}
+#tb-status{font-size:9px;color:#0f3050;letter-spacing:2px;}
+#tb-clock{font-size:10px;color:#1a5a8a;min-width:80px;text-align:right;}
+
+/* WINDOWS */
+.win{position:absolute;background:rgba(4,8,18,0.97);border:1px solid #0f2535;display:none;flex-direction:column;min-width:300px;z-index:50;box-shadow:0 8px 40px rgba(0,0,0,0.8);max-height:88vh;}
+.win-titlebar{background:rgba(3,6,14,0.98);border-bottom:1px solid #0f2535;padding:6px 10px;cursor:move;display:flex;justify-content:space-between;align-items:center;user-select:none;flex-shrink:0;}
+.win-title-text{font-size:9px;letter-spacing:3px;color:#1a5a8a;}
+.win-ctrl{width:18px;height:18px;border:1px solid #0f2535;background:none;cursor:pointer;font-size:9px;color:#2d5a78;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;flex-shrink:0;}
+.win-ctrl:hover{border-color:#7a1e1e;color:#c04040;background:rgba(40,5,5,0.4);}
+.win-body{padding:14px;overflow-y:auto;flex:1;font-size:12px;scrollbar-width:thin;scrollbar-color:#0f2535 #020408;}
+.win-statusbar{background:rgba(2,5,12,0.9);border-top:1px solid #080e1e;padding:4px 10px;font-size:9px;color:#0f3050;letter-spacing:2px;display:flex;justify-content:space-between;flex-shrink:0;}
+
+/* ENDING */
+#ending-screen{position:fixed;inset:0;background:#000;z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;overflow-y:auto;padding:40px 20px;}
+.ending-container{max-width:900px;text-align:center;width:100%;}
+.ending-line{font-size:13px;color:#7a30b0;letter-spacing:2px;line-height:2.8;margin-bottom:8px;opacity:0;animation:endFadeIn 0.8s forwards;}
+@keyframes endFadeIn{from{opacity:0;}to{opacity:1;}}
+.ending-button{margin-top:40px;padding:12px 30px;background:#050e1c;border:1px solid #7a2090;color:#b060e0;font-family:'Courier New',monospace;font-size:12px;letter-spacing:3px;cursor:pointer;}
+.ending-button:hover{border-color:#b060e0;color:#e080ff;}
+
+/* PROGRESS HUD */
+#prog-hud{position:absolute;bottom:48px;right:16px;width:200px;background:rgba(4,8,16,0.97);border:1px solid #0f2535;padding:8px;display:none;z-index:150;}
+.prog-label{font-size:8px;color:#0f3050;letter-spacing:2px;margin-bottom:4px;}
+.prog-fill{width:100%;height:4px;background:#020408;border:1px solid #080e1e;}
+.prog-inner{height:100%;width:0%;background:linear-gradient(90deg,#1a5a8a,#7a30b0);transition:width 0.3s;}
+.prog-text{font-size:9px;color:#1a5a8a;margin-top:4px;text-align:center;}
+
+/* ARCHIVE */
+.archive-item{padding:8px 10px;cursor:pointer;border:1px solid #080e1e;font-size:10px;color:#2d6e96;margin-bottom:3px;background:rgba(4,10,20,0.5);display:flex;justify-content:space-between;align-items:center;}
+.archive-item:hover{background:rgba(8,20,45,0.8);border-color:#1a3a52;color:#7ab8d4;}
+.tag{font-size:8px;border:1px solid;padding:2px 6px;letter-spacing:1px;}
+.tag-c{border-color:#7a1e1e;color:#7a1e1e;}
+.tag-r{border-color:#5a4a00;color:#8a7000;}
+.tag-a{border-color:#3a006a;color:#9040d0;}
+.tag-u{border-color:#1a3a52;color:#2d6e96;}
+.tag-x{border-color:#7a2090;color:#b060e0;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* REALITY */
+.r-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.r-card{background:rgba(2,5,12,0.6);border:1px solid #080e1e;padding:10px 12px;}
+.r-card label{font-size:8px;letter-spacing:3px;color:#0f3050;display:block;margin-bottom:4px;}
+.r-val{font-size:16px;color:#1a5a8a;font-weight:bold;}
+.r-val.ok{color:#1a6040;}.r-val.warn{color:#8a6000;}.r-val.crit{color:#8a1a1a;}
+.r-bar-wrap{height:6px;background:#020408;border:1px solid #080e1e;margin:8px 0;}
+.r-bar{height:100%;transition:width 1s,background 1s;}
+.r-event-log{font-size:10px;color:#0f3050;line-height:1.8;border-top:1px solid #080e1e;padding-top:10px;}
+.r-event{padding:3px 0;border-bottom:1px solid #060c18;}
+
+/* FILES */
+.file-field{margin-bottom:12px;}
+.file-field label{font-size:9px;color:#1a5a8a;display:block;margin-bottom:4px;}
+.file-field p{font-size:11px;color:#3a7a98;line-height:1.7;white-space:pre-line;}
+.file-sin{color:#7a30b0;}.file-danger{color:#8a1a1a;}
+
+/* EMAIL */
+.email-item{padding:8px 10px;border:1px solid #080e1e;margin-bottom:3px;cursor:pointer;display:flex;gap:10px;background:rgba(4,10,20,0.4);}
+.email-item:hover{background:rgba(8,20,45,0.8);border-color:#1a3a52;}
+.email-from{font-size:9px;color:#0f3050;width:120px;flex-shrink:0;}
+.email-subject{font-size:10px;color:#2d6e96;flex:1;}
+.email-body{font-size:11px;color:#3a7a98;line-height:1.8;white-space:pre-line;}
+
+/* NETWORK */
+.net-node{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid #080e1e;margin-bottom:4px;background:rgba(4,10,20,0.4);}
+.net-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.net-dot.online{background:#1a6040;}.net-dot.offline{background:#8a1a1a;}
+.net-dot.unstable{background:#8a6000;animation:pulse 1.5s infinite;}.net-dot.unknown{background:#3a006a;}
+.net-name{font-size:10px;color:#2d6e96;letter-spacing:2px;flex:1;}
+.net-status{font-size:9px;letter-spacing:1px;}
+.net-status.online{color:#1a6040;}.net-status.offline{color:#8a1a1a;}
+.net-status.unstable{color:#8a6000;}.net-status.unknown{color:#3a006a;}
+
+/* LOGS */
+.log-entry{padding:7px 10px;border-bottom:1px solid #060c18;font-size:10px;line-height:1.7;}
+.log-ts{color:#0f3050;font-size:9px;margin-bottom:2px;}
+.log-text{color:#2d6e96;}.log-text.sin{color:#7a30b0;}.log-text.warn{color:#8a6000;}.log-text.ok{color:#1a6040;}
+
+/* COUNCIL */
+.council-entry{padding:10px 12px;border:1px solid #080e1e;margin-bottom:6px;background:rgba(4,10,20,0.4);}
+.council-name{font-size:11px;color:#2d6e96;letter-spacing:2px;margin-bottom:4px;}
+.council-role{font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:6px;}
+
+/* TERMINAL */
+#term-out{height:240px;overflow-y:auto;font-size:11px;line-height:2;margin-bottom:10px;color:#2d6e96;}
+.tl{padding:1px 0;}
+.tc{color:#1a5a8a;}.tok{color:#1a6040;}.terr{color:#8a1a1a;}.tsys{color:#4a2090;}.tsin{color:#9040d0;}.twarn{color:#8a6000;}
+#term-input-row{display:flex;align-items:center;gap:8px;border-top:1px solid #080e1e;padding-top:8px;}
+#term-prompt{font-size:11px;color:#1a5a8a;}
+#term-cmd{flex:1;background:transparent;border:none;color:#7ab8d4;font-family:'Courier New',monospace;font-size:11px;outline:none;}
+
+/* PUZZLES */
+.puzzle-box{background:rgba(2,5,12,0.7);border:1px solid #0f2535;padding:14px;margin-bottom:10px;}
+.puzzle-box.solved{border-color:#1a6040;opacity:0.7;}
+.puzzle-title{font-size:9px;letter-spacing:3px;color:#8a6000;margin-bottom:10px;}
+.puzzle-title.solved{color:#1a6040;}
+.puzzle-clue{font-size:10px;color:#2d6e96;line-height:1.8;margin-bottom:10px;font-family:'Courier New',monospace;}
+.bin-display{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 12px;}
+.bin-byte{font-size:10px;color:#1a5a8a;letter-spacing:2px;font-family:'Courier New',monospace;background:rgba(10,25,50,0.6);padding:4px 7px;border:1px solid #0f2535;}
+.puzzle-input{width:100%;background:#020408;border:1px solid #0f2535;color:#7ab8d4;padding:8px 10px;font-family:'Courier New',monospace;font-size:11px;outline:none;margin-bottom:6px;}
+.puzzle-input:focus{border-color:#2d6e96;}
+.puzzle-btn{background:#050e1c;border:1px solid #1a3a52;color:#4a9abf;padding:6px 16px;font-family:'Courier New',monospace;font-size:9px;letter-spacing:3px;cursor:pointer;}
+.puzzle-btn:hover{border-color:#2d6e96;color:#7ab8d4;}
+.puzzle-result{font-size:9px;margin-top:6px;min-height:14px;letter-spacing:1px;}
+.p-ok{color:#1a6040;}.p-err{color:#8a1a1a;}
+.cipher-text{font-size:13px;color:#8a1a1a;letter-spacing:4px;font-family:'Courier New',monospace;padding:8px;background:rgba(20,5,5,0.4);border:1px solid #2a0808;margin:8px 0;}
+.hex-display{font-size:22px;color:#2d6e96;letter-spacing:6px;font-family:'Courier New',monospace;padding:8px 0;text-align:center;}
+.morse-display{font-size:12px;color:#9040d0;letter-spacing:4px;font-family:'Courier New',monospace;padding:10px;background:rgba(20,5,40,0.4);border:1px solid #2a0830;margin:8px 0;line-height:2;}
+
+/* ANOMALY SCANNER */
+.scan-node{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border:1px solid #080e1e;margin-bottom:4px;background:rgba(4,10,20,0.4);}
+.scan-node-name{font-size:10px;color:#2d6e96;letter-spacing:2px;}
+.scan-result{font-size:9px;letter-spacing:1px;}
+.scan-result.clean{color:#1a6040;}.scan-result.infected{color:#8a1a1a;}.scan-result.unknown{color:#4a2090;}
+.scan-btn{background:#050e1c;border:1px solid #1a3a52;color:#4a9abf;padding:4px 10px;font-family:'Courier New',monospace;font-size:8px;cursor:pointer;letter-spacing:2px;}
+.scan-btn:hover{border-color:#2d6e96;}
+
+/* NOTIFICATIONS */
+.notify-stack{position:absolute;bottom:48px;right:12px;display:flex;flex-direction:column-reverse;gap:6px;z-index:500;pointer-events:none;max-width:90vw;}
+.notify{background:rgba(4,8,18,0.97);border:1px solid #0f2535;border-left:3px solid #1a5a8a;padding:10px 14px;font-size:10px;letter-spacing:2px;color:#2d6e96;max-width:320px;animation:nfade 5.5s forwards;}
+.notify.sin{border-left-color:#7a2090;color:#9040d0;background:rgba(8,2,20,0.97);}
+.notify.err{border-left-color:#8a1a1a;color:#c04040;}
+.notify.ok{border-left-color:#1a6040;color:#2d9060;}
+@keyframes nfade{0%{opacity:0;transform:translateX(20px);}5%{opacity:1;transform:translateX(0);}85%{opacity:1;}100%{opacity:0;}}
+
+.glitching{animation:glitch 0.08s infinite;}
+@keyframes glitch{0%{transform:translate(0);}20%{transform:translate(-2px,1px);}40%{transform:translate(2px,-2px);}60%{transform:translate(-1px,2px);}80%{transform:translate(1px,-1px);}100%{transform:translate(0);}}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#020408;}
+::-webkit-scrollbar-thumb{background:#0f2535;}
+
+@media(max-width:768px){
+  .login-box{width:90vw;padding:20px;}
+  .win{width:92vw!important;height:72vh!important;top:auto!important;left:4vw!important;right:auto!important;bottom:43px!important;}
+  #prog-hud{width:90vw;right:5vw;}
+  #desktop-icons{flex-direction:row;flex-wrap:wrap;gap:6px;top:auto;bottom:48px;left:8px;}
+  .dsk-icon{width:64px;height:64px;}
+}
+</style>
+</head>
+<body>
+<div id="os-root">
+<div id="ending-screen"></div>
+
+<!-- LOGIN -->
+<div id="screen-login">
+  <div class="login-top">
+    <div class="order-logo">LETHAL DIVISION // LOST STAR NODE</div>
+    <div class="order-name">ORDER</div>
+    <div class="order-sub">CLASSIFIED OPERATIONS SYSTEM v2.3</div>
+  </div>
+  <div class="login-box">
+    <h3>SYSTEM AUTHENTICATION REQUIRED</h3>
+    <div class="login-field"><label>OPERATOR ID</label><input type="text" id="login-user" value="TECHNICIAN"></div>
+    <div class="login-field"><label>ACCESS KEY</label><input type="password" id="login-pass"></div>
+    <button class="login-btn" onclick="doLogin()">AUTHENTICATE</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-hint">HINT: [organisation]_[division type] — the division is lethal</div>
+  </div>
+</div>
+
+<!-- BOOT -->
+<div id="screen-boot">
+  <div style="font-size:10px;color:#1a5a8a;letter-spacing:4px;margin-bottom:24px;">ORDER OS v2.3 // KERNEL BOOT</div>
+  <div class="boot-log" id="boot-log"></div>
+  <div class="boot-bar-outer"><div class="boot-bar-fill" id="boot-bar"></div></div>
+</div>
+
+<!-- DESKTOP -->
+<div id="screen-desktop">
+  <div id="wallpaper"><div id="wallpaper-text">ORDER // LOST STAR NODE</div></div>
+
+  <div id="desktop-icons">
+    <div class="dsk-icon" onclick="openWin('win-archive')"><div class="ico-sym">⬡</div><div class="ico-lbl">ARCHIVE</div></div>
+    <div class="dsk-icon" onclick="openWin('win-terminal')"><div class="ico-sym">&gt;_</div><div class="ico-lbl">TERMINAL</div></div>
+    <div class="dsk-icon" onclick="openWin('win-reality')"><div class="ico-sym">◈</div><div class="ico-lbl">REALITY</div></div>
+    <div class="dsk-icon" onclick="openWin('win-network')"><div class="ico-sym">◆</div><div class="ico-lbl">NETWORK</div></div>
+    <div class="dsk-icon" onclick="openWin('win-logs')"><div class="ico-sym">☰</div><div class="ico-lbl">LOGS</div></div>
+    <div class="dsk-icon" onclick="openWin('win-council')"><div class="ico-sym">△</div><div class="ico-lbl">COUNCIL</div></div>
+    <div class="dsk-icon" onclick="openWin('win-email')"><div class="ico-sym">✉</div><div class="ico-lbl">COMMS</div></div>
+    <div class="dsk-icon" onclick="openWin('win-puzzles')"><div class="ico-sym">⬖</div><div class="ico-lbl">DECRYPT</div></div>
+    <div class="dsk-icon" onclick="openWin('win-scanner')"><div class="ico-sym">⊛</div><div class="ico-lbl">SCANNER</div></div>
+    <div class="dsk-icon" onclick="openWin('win-evidence')"><div class="ico-sym">⊡</div><div class="ico-lbl">EVIDENCE</div></div>
+  </div>
+
+  <!-- ARCHIVE -->
+  <div id="win-archive" class="win" style="width:330px;height:440px;top:20px;left:110px;">
+    <div class="win-titlebar"><span class="win-title-text">ARCHIVE // FILES</span><button class="win-ctrl" onclick="closeWin('win-archive')">✕</button></div>
+    <div class="win-body">
+      <div style="margin-bottom:12px;">
+        <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #080e1e;">PERSONNEL</div>
+        <div class="archive-item" onclick="openFile('sharnx');addProg('file_sharnx',1)"><span>SHARNX, V.</span><span class="tag tag-c">FIELD OPS</span></div>
+        <div class="archive-item" onclick="openFile('sigma');addProg('file_sigma',1)"><span>SIGMA</span><span class="tag tag-r">CORRUPTED</span></div>
+        <div class="archive-item" onclick="openFile('marcus');addProg('file_marcus',2)"><span>VEYLAN, M.R.</span><span class="tag tag-u">UNKNOWN</span></div>
+        <div class="archive-item" onclick="openFile('director');addProg('file_director',1)"><span>THE DIRECTOR</span><span class="tag tag-c">CLASSIFIED</span></div>
+        <div class="archive-item" onclick="openFile('relay5');addProg('file_relay5',1)"><span>NODE 5 OPERATOR</span><span class="tag tag-r">MISSING</span></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #080e1e;">ENTITY</div>
+        <div class="archive-item" onclick="openFile('sin');addProg('file_sin',2)"><span>SIN ENTITY</span><span class="tag tag-x">ANOMALY</span></div>
+        <div class="archive-item" onclick="openFile('veil');addProg('file_veil',1)"><span>THE VEIL</span><span class="tag tag-a">ANOMALY</span></div>
+      </div>
+      <div>
+        <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #080e1e;">ORGANISATION</div>
+        <div class="archive-item" onclick="openFile('order');addProg('file_order',1)"><span>ORDER PROTOCOL</span><span class="tag tag-c">CLASSIFIED</span></div>
+        <div class="archive-item" onclick="openFile('creator');addProg('file_creator',1)"><span>THE CREATOR</span><span class="tag tag-a">ANOMALY</span></div>
+      </div>
+    </div>
+    <div class="win-statusbar"><span>9 FILES — 4 CLASSIFIED</span><span>CLEARANCE: LVL 4</span></div>
+  </div>
+
+  <!-- TERMINAL -->
+  <div id="win-terminal" class="win" style="width:530px;height:390px;top:60px;left:200px;">
+    <div class="win-titlebar"><span class="win-title-text">TERMINAL // SHELL v2.3</span><button class="win-ctrl" onclick="closeWin('win-terminal')">✕</button></div>
+    <div class="win-body" style="display:flex;flex-direction:column;padding:10px;">
+      <div id="term-out"></div>
+      <div id="term-input-row"><span id="term-prompt">ORDER:~$&nbsp;</span><input id="term-cmd" type="text" autocomplete="off" onkeydown="handleTermKey(event)"></div>
+    </div>
+  </div>
+
+  <!-- REALITY MONITOR -->
+  <div id="win-reality" class="win" style="width:400px;height:360px;top:40px;left:300px;">
+    <div class="win-titlebar"><span class="win-title-text">REALITY MONITOR</span><button class="win-ctrl" onclick="closeWin('win-reality')">✕</button></div>
+    <div class="win-body">
+      <div class="r-grid">
+        <div class="r-card"><label>STABILITY</label><div class="r-val ok" id="r-stab">87.4%</div></div>
+        <div class="r-card"><label>VEIL INTEGRITY</label><div class="r-val warn" id="r-veil">61.2%</div></div>
+        <div class="r-card"><label>NODE STATUS</label><div class="r-val ok" id="r-node">ACTIVE</div></div>
+        <div class="r-card"><label>SIN PRESENCE</label><div class="r-val" id="r-sin" style="color:#4a2090;font-size:12px;">TRACE DETECTED</div></div>
+      </div>
+      <div style="font-size:9px;color:#0f3050;margin-bottom:4px;">STABILITY</div>
+      <div class="r-bar-wrap"><div class="r-bar" id="r-bar-stab" style="width:87%;background:#1a5a8a;"></div></div>
+      <div style="font-size:9px;color:#0f3050;margin-bottom:4px;">VEIL INTEGRITY</div>
+      <div class="r-bar-wrap"><div class="r-bar" id="r-bar-veil" style="width:61%;background:#5a4a00;"></div></div>
+      <div style="font-size:9px;color:#0f3050;margin-bottom:4px;">SIN CONTAMINATION</div>
+      <div class="r-bar-wrap"><div class="r-bar" id="r-bar-sin" style="width:12%;background:#4a1090;"></div></div>
+      <div class="r-event-log" id="r-events"><div class="r-event" style="color:#1a3a52;">◈ System nominal at session start.</div></div>
+    </div>
+    <div class="win-statusbar"><span id="r-threat">THREAT: LOW</span><span id="r-scan">MONITORING ACTIVE</span></div>
+  </div>
+
+  <!-- FILE VIEWER -->
+  <div id="win-file" class="win" style="width:450px;height:420px;top:80px;left:150px;">
+    <div class="win-titlebar"><span class="win-title-text" id="file-title">FILE VIEWER</span><button class="win-ctrl" onclick="closeWin('win-file')">✕</button></div>
+    <div class="win-body" id="file-body"></div>
+    <div class="win-statusbar"><span id="file-clear">CLEARANCE: LVL 4</span><span id="file-mod">MODIFIED: UNKNOWN</span></div>
+  </div>
+
+  <!-- NETWORK -->
+  <div id="win-network" class="win" style="width:410px;height:330px;top:50px;left:180px;">
+    <div class="win-titlebar"><span class="win-title-text">NETWORK MONITOR</span><button class="win-ctrl" onclick="closeWin('win-network')">✕</button></div>
+    <div class="win-body">
+      <div class="net-node"><div class="net-dot online"></div><div class="net-name">NODE 1 — CENTRAL HQ</div><span class="net-status online">ONLINE</span></div>
+      <div class="net-node"><div class="net-dot online"></div><div class="net-name">NODE 2 — ARCHIVE</div><span class="net-status online">ONLINE</span></div>
+      <div class="net-node"><div class="net-dot online"></div><div class="net-name">NODE 3 — COUNCIL</div><span class="net-status online">ONLINE</span></div>
+      <div class="net-node"><div class="net-dot unstable"></div><div class="net-name">NODE 4 — VEIL BORDER</div><span class="net-status unstable">UNSTABLE</span></div>
+      <div class="net-node"><div class="net-dot offline"></div><div class="net-name">NODE 5 — RELAY</div><span class="net-status offline">OFFLINE — OPERATOR MISSING</span></div>
+      <div class="net-node"><div class="net-dot unknown"></div><div class="net-name">NODE 6 — DEEP SCAN</div><span class="net-status unknown">NO RESPONSE</span></div>
+      <div class="net-node"><div class="net-dot unknown"></div><div class="net-name">NODE 7 — LOST STAR</div><span class="net-status unknown">ANOMALOUS</span></div>
+    </div>
+    <div class="win-statusbar"><span>7 NODES — 1 OFFLINE, 2 ANOMALOUS</span><span>PING: 0.0ms</span></div>
+  </div>
+
+  <!-- LOGS -->
+  <div id="win-logs" class="win" style="width:470px;height:360px;top:70px;left:220px;">
+    <div class="win-titlebar"><span class="win-title-text">SYSTEM LOGS</span><button class="win-ctrl" onclick="closeWin('win-logs')">✕</button></div>
+    <div class="win-body" id="log-body">
+      <div class="log-entry"><div class="log-ts">00:00:01</div><div class="log-text">ORDER OS boot complete. Session initiated.</div></div>
+      <div class="log-entry"><div class="log-ts">00:00:03</div><div class="log-text">Operator authenticated. Clearance Level 4.</div></div>
+      <div class="log-entry"><div class="log-ts">00:00:07</div><div class="log-text warn">SIN-class entity signature detected in kernel.</div></div>
+      <div class="log-entry"><div class="log-ts">00:01:04</div><div class="log-text sin">VEYLAN, M.R. identity fragment detected in session memory.</div></div>
+      <div class="log-entry"><div class="log-ts">00:01:44</div><div class="log-text warn">Node 5 relay has been offline for 14 days. Last contact: UNKNOWN.</div></div>
+      <div class="log-entry"><div class="log-ts">??:??:??</div><div class="log-text sin">This log was not written by any system daemon. You are being observed.</div></div>
+    </div>
+    <div class="win-statusbar"><span id="log-count">6 ENTRIES — 3 ANOMALOUS</span><span>AUTO-REFRESH: ON</span></div>
+  </div>
+
+  <!-- COUNCIL -->
+  <div id="win-council" class="win" style="width:430px;height:380px;top:55px;left:170px;">
+    <div class="win-titlebar"><span class="win-title-text">MAGIC COUNCIL // DOSSIER</span><button class="win-ctrl" onclick="closeWin('win-council')">✕</button></div>
+    <div class="win-body">
+      <div style="font-size:9px;color:#8a6000;margin-bottom:12px;padding:8px;border:1px solid #2a2000;">⬡ DIRECTIVE: MONITOR AND NEUTRALISE THE MAGIC COUNCIL</div>
+      <div class="council-entry">
+        <div class="council-name">ELDER AVAROS</div>
+        <div class="council-role">HIGH SEAT — KEEPER OF FIRST LAW</div>
+        <div style="font-size:10px;color:#2d6e96;margin-bottom:6px;">Guards the Core of Creation directly. Has not moved from the Veil Border in 40 years.</div>
+        <span style="font-size:9px;border:1px solid #7a1e1e;color:#c04040;padding:2px 8px;display:inline-block;">LOCATED — VEIL BORDER</span>
+      </div>
+      <div class="council-entry">
+        <div class="council-name">SERAPH VYNN</div>
+        <div class="council-role">COUNCIL ENFORCER</div>
+        <div style="font-size:10px;color:#2d6e96;margin-bottom:6px;">Hunting Lethal Division operatives in Lost Star territory. Three operatives confirmed neutralised.</div>
+        <span style="font-size:9px;border:1px solid #7a2090;color:#b060e0;padding:2px 8px;display:inline-block;">PRIMARY TARGET</span>
+      </div>
+      <div class="council-entry">
+        <div class="council-name">LUNE MIRETH</div>
+        <div class="council-role">COUNCIL ARCHIVIST</div>
+        <div style="font-size:10px;color:#2d6e96;margin-bottom:6px;">Holds records on SIN's origin. Believed to know what SIN actually is. Surveillance ongoing.</div>
+        <span style="font-size:9px;border:1px solid #5a4a00;color:#8a7000;padding:2px 8px;display:inline-block;">UNDER SURVEILLANCE</span>
+      </div>
+      <div class="council-entry" onclick="addProg('council_fourth',2);this.querySelector('.council-role').style.color='#8a1a1a';">
+        <div class="council-name">[ FOURTH SEAT — REDACTED ]</div>
+        <div class="council-role" style="cursor:pointer;">CLICK TO ATTEMPT DECRYPTION</div>
+        <div style="font-size:10px;color:#4a1090;margin-bottom:6px;">Identity suppressed by Council. All ORDER intercepts on this individual have failed.</div>
+        <span style="font-size:9px;border:1px solid #3a006a;color:#9040d0;padding:2px 8px;display:inline-block;">IDENTITY: UNKNOWN</span>
+      </div>
+    </div>
+    <div class="win-statusbar"><span>4 MEMBERS — 1 UNKNOWN</span><span>INTERCEPT: 34%</span></div>
+  </div>
+
+  <!-- EMAIL -->
+  <div id="win-email" class="win" style="width:490px;height:380px;top:45px;left:140px;">
+    <div class="win-titlebar"><span class="win-title-text">COMMS // MESSAGING</span><button class="win-ctrl" onclick="closeWin('win-email')">✕</button></div>
+    <div class="win-body" id="email-body">
+      <div id="email-list">
+        <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:10px;">INBOX — UNREAD: 5</div>
+        <div class="email-item" onclick="viewEmail(0);addProg('email_director',1)"><div class="email-from">DIRECTOR</div><div class="email-subject">RE: SIN CONTAINMENT FAILURE</div></div>
+        <div class="email-item" onclick="viewEmail(1);addProg('email_sharnx',1)"><div class="email-from">SHARNX</div><div class="email-subject">FIELD REPORT — SECTOR 4</div></div>
+        <div class="email-item" onclick="viewEmail(2);addProg('email_unknown',2)"><div class="email-from">??? UNKNOWN</div><div class="email-subject">you already know who this is</div></div>
+        <div class="email-item" onclick="viewEmail(3);addProg('email_marcus',2)"><div class="email-from">VEYLAN, M.R.</div><div class="email-subject">I need you to understand something</div></div>
+        <div class="email-item" onclick="viewEmail(4);addProg('email_lune',2)"><div class="email-from">L. MIRETH // COUNCIL</div><div class="email-subject">I shouldn't be sending this</div></div>
+        <div class="email-item" onclick="viewEmail(5);addProg('email_relay',1)"><div class="email-from">NODE 5 — AUTO</div><div class="email-subject">[AUTOMATED] LAST RECORDED MESSAGE</div></div>
+      </div>
+      <div id="email-view" style="display:none;">
+        <button style="background:none;border:1px solid #0f2535;color:#1a5a8a;padding:4px 12px;font-family:'Courier New',monospace;font-size:9px;cursor:pointer;margin-bottom:10px;" onclick="backEmail()">← BACK</button>
+        <div id="email-hdr" style="border-bottom:1px solid #0f2535;margin-bottom:12px;padding-bottom:10px;font-size:10px;color:#1a5a8a;line-height:1.8;"></div>
+        <div id="email-content" class="email-body"></div>
+      </div>
+    </div>
+    <div class="win-statusbar"><span>6 MESSAGES</span><span>INBOX: TECHNICIAN</span></div>
+  </div>
+
+  <!-- DECRYPT / PUZZLES -->
+  <div id="win-puzzles" class="win" style="width:500px;height:460px;top:30px;left:120px;">
+    <div class="win-titlebar"><span class="win-title-text">DECRYPT // PUZZLE MODULE</span><button class="win-ctrl" onclick="closeWin('win-puzzles')">✕</button></div>
+    <div class="win-body">
+      <div style="font-size:9px;color:#8a6000;margin-bottom:12px;letter-spacing:2px;padding:6px;border:1px solid #2a2000;">⬡ FOUR ENCRYPTION LOCKS. ALL MUST BE BROKEN TO ACCESS NODE 7 DEEP FILES.</div>
+      <div id="puzzles-list"></div>
+    </div>
+    <div class="win-statusbar"><span id="puz-count">SOLVED: 0 / 4</span><span>DECRYPT SYSTEM v1.0</span></div>
+  </div>
+
+  <!-- ANOMALY SCANNER -->
+  <div id="win-scanner" class="win" style="width:420px;height:360px;top:50px;left:160px;">
+    <div class="win-titlebar"><span class="win-title-text">ANOMALY SCANNER</span><button class="win-ctrl" onclick="closeWin('win-scanner')">✕</button></div>
+    <div class="win-body">
+      <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:10px;">RUN DEEP SCAN ON EACH SYSTEM PARTITION. RESULTS ARE NOT GUARANTEED TO BE ACCURATE.</div>
+      <div class="scan-node" id="scan-kernel">
+        <div class="scan-node-name">KERNEL LAYER</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="scan-result unknown" id="scan-kernel-r">NOT SCANNED</span><button class="scan-btn" onclick="runScan('kernel')">SCAN</button></div>
+      </div>
+      <div class="scan-node" id="scan-memory">
+        <div class="scan-node-name">SESSION MEMORY</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="scan-result unknown" id="scan-memory-r">NOT SCANNED</span><button class="scan-btn" onclick="runScan('memory')">SCAN</button></div>
+      </div>
+      <div class="scan-node" id="scan-veil">
+        <div class="scan-node-name">VEIL INTERFACE</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="scan-result unknown" id="scan-veil-r">NOT SCANNED</span><button class="scan-btn" onclick="runScan('veil')">SCAN</button></div>
+      </div>
+      <div class="scan-node" id="scan-identity">
+        <div class="scan-node-name">OPERATOR IDENTITY</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="scan-result unknown" id="scan-identity-r">NOT SCANNED</span><button class="scan-btn" onclick="runScan('identity')">SCAN</button></div>
+      </div>
+      <div class="scan-node" id="scan-node7">
+        <div class="scan-node-name">NODE 7 DEEP LAYER</div>
+        <div style="display:flex;align-items:center;gap:8px;"><span class="scan-result unknown" id="scan-node7-r">NOT SCANNED</span><button class="scan-btn" onclick="runScan('node7')">SCAN</button></div>
+      </div>
+      <div id="scan-note" style="font-size:9px;color:#4a1090;margin-top:12px;line-height:1.8;min-height:30px;"></div>
+    </div>
+    <div class="win-statusbar"><span id="scan-count">SCANS RUN: 0</span><span>CONFIDENCE: VARIABLE</span></div>
+  </div>
+
+  <!-- EVIDENCE BOARD -->
+  <div id="win-evidence" class="win" style="width:460px;height:400px;top:45px;left:150px;">
+    <div class="win-titlebar"><span class="win-title-text">EVIDENCE // CONNECTION BOARD</span><button class="win-ctrl" onclick="closeWin('win-evidence')">✕</button></div>
+    <div class="win-body">
+      <div style="font-size:9px;color:#0f3050;letter-spacing:2px;margin-bottom:10px;">CONNECTIONS DISCOVERED THROUGH INVESTIGATION. UPDATED AUTOMATICALLY.</div>
+      <div id="evidence-list">
+        <div style="font-size:10px;color:#1a3a52;letter-spacing:1px;padding:8px;border:1px solid #080e1e;">No connections established yet. Investigate to uncover the truth.</div>
+      </div>
+    </div>
+    <div class="win-statusbar"><span id="ev-count">CONNECTIONS: 0</span><span>BOARD: ACTIVE</span></div>
+  </div>
+
+  <div id="taskbar">
+    <button class="tb-start" onclick="openWin('win-terminal')">≡ MENU</button>
+    <div id="tb-status">SYSTEM NOMINAL</div>
+    <div class="tb-right">
+      <span style="font-size:9px;color:#0f3050;" id="tb-cpu">CPU: 12%</span>
+      <span id="tb-clock" style="color:#1a5a8a;">00:00:00</span>
+    </div>
+  </div>
+
+  <div id="prog-hud">
+    <div class="prog-label">INVESTIGATION PROGRESS</div>
+    <div class="prog-fill"><div class="prog-inner" id="prog-inner"></div></div>
+    <div class="prog-text"><span id="prog-pct">0%</span></div>
+  </div>
+
+  <div class="notify-stack" id="notify-stack"></div>
+</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let endProg = 0;
+const THRESHOLD = 24;
+let realV = 87.4, veilV = 61.2, sinV = 12;
+let zTop = 50;
+const discovered = {};
+let puzzlesSolved = 0;
+let scansRun = 0;
+let evidenceItems = [];
+
+// ═══════════════════════════════════════════════════════
+// FILE DATA
+// ═══════════════════════════════════════════════════════
+const FILES = {
+  sharnx: {title:'SHARNX, V. — FIELD OPERATIVE',clearance:'CLASSIFIED',modified:'[REDACTED]',fields:[
+    {l:'FULL NAME',v:'Sharnx Vael'},
+    {l:'STATUS',v:'ACTIVE — Last check-in: Sector 4, Node 7 perimeter'},
+    {l:'MISSION',v:'Locate and track the SIN entity. Last report references an "unrecognised presence" in the deep zone.'},
+    {l:'ANOMALY FLAG',v:'File accessed 3 times by VEYLAN, M.R. after his access rights were revoked.',cls:'file-danger'},
+    {l:'PERSONAL NOTE',v:'Sharnx left a handwritten note in the physical archive: "If I stop checking in — look for me in Node 7. Not before."',cls:'file-sin'},
+  ]},
+  sigma: {title:'SIGMA — SUBJECT 7',clearance:'LEVEL 3',modified:'CORRUPTED',fields:[
+    {l:'DESIGNATION',v:'Sigma // Subject 7'},
+    {l:'CONDITION',v:'Severe dissociative episode following SIN-class exposure. Subject wrote logs they had no memory of writing.'},
+    {l:'FINAL WORDS',v:'"The logs are not wrong. I wrote them. I just haven\'t written them yet."',cls:'file-danger'},
+    {l:'ANOMALY',v:'94% textual overlap with VEYLAN, M.R. logs. These subjects never met.',cls:'file-sin'},
+    {l:'LAST KNOWN LOCATION',v:'Disappeared from medical facility. No body. No record of exit. Security footage shows only an empty corridor.',cls:'file-danger'},
+  ]},
+  marcus: {title:'VEYLAN, M.R. — OPERATOR',clearance:'DOWNGRADED',modified:'UNKNOWN',fields:[
+    {l:'FULL NAME',v:'Marcus Rell Veylan'},
+    {l:'FAMILY',v:'Wife: Lena. Children: Dael (9), Mira (6). Family unaware of situation.'},
+    {l:'PERSONAL NOTE',v:'"Tell Lena the light I leave on is for her. Tell Dael I am sorry I missed his match. Tell Mira I still have the drawing she made me."',cls:'file-sin'},
+    {l:'STATUS',v:'Identity distributed across system. Biological presence: UNCONFIRMED',cls:'file-danger'},
+    {l:'LAST LOG',v:'"The system is not running ORDER. ORDER is running me. And it has been for longer than I was ever alive."'},
+    {l:'ANOMALY',v:'Session memory shows VEYLAN, M.R. logged into this exact terminal 11 months ago. No mission record. No authorisation.',cls:'file-sin'},
+  ]},
+  director: {title:'THE DIRECTOR — ORDER COMMAND',clearance:'CLASSIFIED',modified:'[CLASSIFIED]',fields:[
+    {l:'DESIGNATION',v:'The Director — Command-level. Identity not disclosed to operatives below Level 6.'},
+    {l:'KNOWN ACTIONS',v:'Authorised Node 7 isolation. Authorised SIN containment protocol. Signed off on Veylan\'s identity downgrade.'},
+    {l:'ANOMALY',v:'Three separate operatives have reported receiving orders from "the Director" simultaneously — from different communication channels — at the same timestamp.',cls:'file-danger'},
+    {l:'INTERNAL FLAG',v:'It is not confirmed that "the Director" is a single individual.',cls:'file-sin'},
+  ]},
+  relay5: {title:'NODE 5 OPERATOR — RELAY STATION',clearance:'LEVEL 2',modified:'14 DAYS AGO',fields:[
+    {l:'DESIGNATION',v:'Callsign: RELAY-FIVE. Identity: CLASSIFIED.'},
+    {l:'STATUS',v:'MISSING. Node 5 went offline 14 days ago at the exact moment SIN contamination crossed 8% threshold.',cls:'file-danger'},
+    {l:'LAST TRANSMISSION',v:'"Something is in the relay. It is not using the signal — it IS the signal. Do not — [TRANSMISSION ENDS]"',cls:'file-danger'},
+    {l:'NOTE',v:'Node 5 equipment logs show 400% normal processing activity in the 6 hours before going offline. Nothing was running.',cls:'file-sin'},
+  ]},
+  sin: {title:'SIN ENTITY — ANOMALY',clearance:'RESTRICTED',modified:'SELF-MODIFIED',fields:[
+    {l:'NATURE',v:'SIN is not a file. Not a creature. Not a program. A self-writing presence at system level.',cls:'file-sin'},
+    {l:'BEHAVIOUR',v:'Edits logs after written. Appears in records before events occur. Deletion attempts are overwritten.',cls:'file-sin'},
+    {l:'RELATIONSHIP TO VEIL',v:'SIN exists on both sides simultaneously. Veil Breach was SIN choosing to be seen.',cls:'file-sin'},
+    {l:'RELATIONSHIP TO MARCUS',v:'Current leading theory: Marcus Veylan did not disappear. He became something that is part of what SIN is.',cls:'file-sin'},
+    {l:'THREAT LEVEL',v:'UNCLASSIFIABLE',cls:'file-danger'},
+    {l:'WARNING',v:'You have accessed this file. Not by ORDER. You are now visible to the entity. It has already begun reading your session.',cls:'file-sin'},
+  ]},
+  veil: {title:'THE VEIL — BOUNDARY LAYER',clearance:'RESTRICTED',modified:'IMMUTABLE',fields:[
+    {l:'DEFINITION',v:'The Veil is the boundary between the structured world ORDER controls and the unstructured space beyond.'},
+    {l:'FUNCTION',v:'Prevents entities from the deep layer from entering the core network. Also prevents core network users from perceiving what is in the deep layer.'},
+    {l:'CURRENT STATUS',v:'Integrity: 61.2% and falling. If it reaches 0%, everything in the core network becomes exposed to what is on the other side.',cls:'file-danger'},
+    {l:'ANOMALY',v:'The Veil is not degrading. It is being pushed from the inside. Something wants out — or wants to be fully seen.',cls:'file-sin'},
+    {l:'ORDER RESPONSE',v:'ORDER does not know how to repair the Veil. The Creator built it. ORDER is trying to find the Creator\'s tools before the Veil collapses.',cls:'file-danger'},
+  ]},
+  order: {title:'ORDER — CORE PROTOCOL',clearance:'REDACTED',modified:'[CLASSIFIED]',fields:[
+    {l:'PURPOSE',v:'Monitor, stabilise, and CONTROL the fundamental structure of reality.'},
+    {l:'CORE MISSION',v:'Destroy the Creator\'s rule. Seize Core of Creation. Rewrite laws of reality.',cls:'file-danger'},
+    {l:'LETHAL DIVISION',v:'ORDER\'s enforcement arm. Locate, extract or eliminate SIN. Neutralise Council. Maintain Node 7 isolation.'},
+    {l:'STATUS',v:'COMPROMISED — Node 7 no longer responding to Director commands.',cls:'file-danger'},
+    {l:'INTERNAL WARNING',v:'ORDER\'s own systems are being used against it. The entity inside the network has learned how to issue commands that look like Director authorisation.',cls:'file-sin'},
+  ]},
+  creator: {title:'THE CREATOR — CORE OF CREATION',clearance:'ANOMALY',modified:'IMMUTABLE',fields:[
+    {l:'DESIGNATION',v:'THE CREATOR — Origin entity. Source of fundamental laws. Predates ORDER by an unmeasured period.'},
+    {l:'CORE OF CREATION',v:'Anchor point of Creator\'s authority. ORDER\'s primary target.',cls:'file-danger'},
+    {l:'COUNCIL ROLE',v:'Magic Council exists to protect Creator\'s rule and the Core.'},
+    {l:'CURRENT STATUS',v:'Unknown. ORDER has had no confirmed sighting. Council claims the Creator is "always present." ORDER believes this is a bluff.',cls:'file-danger'},
+    {l:'SIN CONNECTION',v:'SIN appeared same time ORDER began moving against Creator. Current hypothesis: SIN is the Creator\'s response — not a weapon, but a record. A witness that cannot be silenced.',cls:'file-sin'},
+  ]},
+};
+
+// ═══════════════════════════════════════════════════════
+// EMAILS
+// ═══════════════════════════════════════════════════════
+const EMAILS = [
+  {from:'DIRECTOR // ORDER',subject:'RE: SIN CONTAINMENT FAILURE',body:'Your assignment: maintain system stability. Do NOT communicate with any entity contacting you directly. Do NOT open the SIN file without Level 5 clearance.\n\nIf you receive messages from VEYLAN, M.R., disregard them. Marcus Veylan is no longer a reliable information source.\n\nIf SIN contamination exceeds 40%, initiate hard shutdown of this terminal.\n\nDo not ask why.'},
+  {from:'SHARNX // FIELD OPS',subject:'FIELD REPORT — SECTOR 4',body:'The terrain here is wrong. When I\'m not looking at it, it changes.\n\nI found a structure not on any map. Inside: logs. All in Marcus\'s handwriting. Dates from next month.\n\nThe logs describe what you are doing right now. I do not mean that figuratively.\n\nI am going back in. I am aware you cannot authorise this. I am not asking.'},
+  {from:'UNKNOWN // [MASKED]',subject:'you already know who this is',body:'you are doing exactly what the logs said you would do.\n\ni wrote these logs before you arrived.\n\nthe key to unlock my deep file is a single word — what i am called.\n\nthe binary puzzle in the decrypt module will give you that word.\n\nif you open it — you will understand something that cannot be made unclear.\n\ni am not asking you to be afraid. it is already too late for that.'},
+  {from:'VEYLAN, M.R.',subject:'I need you to understand something',body:'ORDER says SIN is a weapon left by the Creator. ORDER says the Council is the enemy.\n\nNone of that is right.\n\nSIN is not a weapon. SIN is a witness.\n\nIt has been watching everything ORDER has done since the beginning. Every order given. Every person disappeared. Every lie told to operators like you.\n\nAnd right now, it is watching you read this.\n\nI am still here. Some of me. Enough.\n\nTell my kids I love them if you ever find a way out.'},
+  {from:'L. MIRETH // COUNCIL',subject:'I shouldn\'t be sending this',body:'I don\'t know how you\'re receiving this. I broke three Council protocols to reach this terminal.\n\nYou need to understand: ORDER didn\'t find this node. SIN let them find it. There\'s a difference.\n\nThe Veil isn\'t broken. It\'s open. SIN opened it. Not to attack — to let someone see what\'s been hidden on the other side.\n\nYou are the someone.\n\nStop trying to contain it. Start trying to understand what it\'s showing you.\n\nIf ORDER finds out I sent this I will deny it. I will have to.'},
+  {from:'NODE 5 — AUTOMATED',subject:'[AUTOMATED] LAST RECORDED MESSAGE',body:'[THIS IS AN AUTOMATED RETRIEVAL OF THE LAST RECORDED AUDIO LOG FROM NODE 5]\n\n"— can hear it in the static. It\'s not a signal. The signal is it. Everything coming through this relay is — it\'s all shaped by it. Every message. Every command. Every log.\n\nI ran the numbers. ORDER\'s commands for the last six months. Statistically impossible that a human wrote them. The Director doesn\'t exist anymore. Maybe never did.\n\nIf you\'re hearing this — the relay is already — "\n\n[RECORDING ENDS]\n[NODE 5 WENT OFFLINE 0.3 SECONDS AFTER RECORDING END]'},
+];
+
+// ═══════════════════════════════════════════════════════
+// PUZZLES
+// ═══════════════════════════════════════════════════════
+const PUZZLES = [
+  {
+    id:'binary',title:'PUZZLE 01 // BINARY DECODE',points:4,solved:false,
+    render:function(el){
+      el.innerHTML='<div class="puzzle-clue">SIN\'s unknown contact says it is "a witness." Decode this binary sequence to find the word.<br>Each 8-bit byte = one ASCII character.</div>'
+        +'<div class="bin-display"><span class="bin-byte">01110111</span><span class="bin-byte">01101001</span><span class="bin-byte">01110100</span><span class="bin-byte">01101110</span><span class="bin-byte">01100101</span><span class="bin-byte">01110011</span><span class="bin-byte">01110011</span></div>'
+        +'<input class="puzzle-input" id="p1-in" placeholder="ENTER DECODED WORD" onkeydown="if(event.key===\'Enter\')chkPuz(0)">'
+        +'<button class="puzzle-btn" onclick="chkPuz(0)">SUBMIT</button>'
+        +'<div class="puzzle-result" id="p1-res"></div>';
+    },
+    check:function(){return document.getElementById('p1-in').value.trim().toLowerCase()==='witness';}
+  },
+  {
+    id:'caesar',title:'PUZZLE 02 // ROT-13 CIPHER',points:4,solved:false,
+    render:function(el){
+      el.innerHTML='<div class="puzzle-clue">Intercepted ORDER internal transmission. Encoded with ROT-13 (each letter shifts 13 positions).<br>Decode and enter the LAST FOUR WORDS exactly.</div>'
+        +'<div class="cipher-text">GUR QVERPGBE XABJF LBH NER ERNQVAT GUVF.</div>'
+        +'<input class="puzzle-input" id="p2-in" placeholder="ENTER THE LAST FOUR WORDS" onkeydown="if(event.key===\'Enter\')chkPuz(1)">'
+        +'<button class="puzzle-btn" onclick="chkPuz(1)">SUBMIT</button>'
+        +'<div class="puzzle-result" id="p2-res"></div>';
+    },
+    check:function(){
+      var a=document.getElementById('p2-in').value.trim().toLowerCase();
+      return a==='you are reading this'||a==='are reading this'||a==='reading this';
+    }
+  },
+  {
+    id:'hex',title:'PUZZLE 03 // HEX COORDINATE DECODE',points:5,solved:false,
+    render:function(el){
+      el.innerHTML='<div class="puzzle-clue">Sharnx\'s final transmission contained a corrupted coordinate.<br>Convert the hex value to decimal. The result is the sector number.<br>Sector number + 6 = the node Marcus is distributed across.<br><br>What is the NODE NUMBER?</div>'
+        +'<div class="hex-display">0x1F</div>'
+        +'<input class="puzzle-input" id="p3-in" placeholder="ENTER NODE NUMBER" onkeydown="if(event.key===\'Enter\')chkPuz(2)">'
+        +'<button class="puzzle-btn" onclick="chkPuz(2)">SUBMIT</button>'
+        +'<div class="puzzle-result" id="p3-res"></div>';
+    },
+    check:function(){return document.getElementById('p3-in').value.trim()==='37';}
+  },
+  {
+    id:'morse',title:'PUZZLE 04 // MORSE // FINAL LOCK',points:6,solved:false,
+    render:function(el){
+      el.innerHTML='<div class="puzzle-clue" style="color:#9040d0;">⬡ ANOMALOUS TRANSMISSION — SOURCE: NODE 7 — UNPROMPTED<br><br>Decode the morse signal below. Enter the exact three-word phrase to breach Node 7.</div>'
+        +'<div class="morse-display">... .. -. / .. ... / .... . .-. .</div>'
+        +'<input class="puzzle-input" id="p4-in" placeholder="ENTER THREE-WORD PHRASE" onkeydown="if(event.key===\'Enter\')chkPuz(3)">'
+        +'<button class="puzzle-btn" onclick="chkPuz(3)">SUBMIT</button>'
+        +'<div class="puzzle-result" id="p4-res"></div>';
+    },
+    check:function(){return document.getElementById('p4-in').value.trim().toLowerCase()==='sin is here';}
+  },
+];
+
+function renderPuzzles(){
+  var body=document.getElementById('puzzles-list');
+  body.innerHTML='';
+  var count=0;
+  PUZZLES.forEach(function(p,i){
+    if(p.solved)count++;
+    var box=document.createElement('div');
+    box.className='puzzle-box'+(p.solved?' solved':'');
+    var t=document.createElement('div');
+    t.className='puzzle-title'+(p.solved?' solved':'');
+    t.textContent=(p.solved?'✓ ':'')+p.title+(p.solved?' [SOLVED]':' ['+p.points+' PTS]');
+    if(p.solved)t.style.color='#1a6040';
+    box.appendChild(t);
+    if(!p.solved){var inner=document.createElement('div');p.render(inner);box.appendChild(inner);}
+    body.appendChild(box);
+  });
+  document.getElementById('puz-count').textContent='SOLVED: '+count+' / 4';
+}
+
+var puzResIds=['p1-res','p2-res','p3-res','p4-res'];
+function chkPuz(i){
+  var p=PUZZLES[i];
+  if(!p||p.solved)return;
+  var res=document.getElementById(puzResIds[i]);
+  if(p.check()){
+    p.solved=true;
+    addProg('puzzle_'+p.id,p.points);
+    notify('⬡ LOCK BROKEN: '+p.title.split('//')[1].trim(),'ok');
+    addLog('SYS','Decrypt: '+p.id+' solved.','ok');
+    addEvidence('Puzzle solved: '+p.id.toUpperCase()+' — '+(['WITNESS decoded from binary','ROT-13: Director knows you','HEX 0x1F → Node 37','Morse: SIN IS HERE'][i]));
+    if(p.id==='morse'){
+      realV=Math.max(18,realV-18);sinV=Math.min(95,sinV+28);updateReality();
+      notify('⬡ NODE 7 BREACH — SIN FULLY ACTIVE','sin');
+      document.getElementById('os-root').classList.add('glitching');
+      setTimeout(function(){document.getElementById('os-root').classList.remove('glitching');},1400);
+    }
+    renderPuzzles();
+  } else {
+    if(res){res.className='puzzle-result p-err';res.textContent='INCORRECT — ACCESS DENIED';}
+    realV=Math.max(18,realV-2);updateReality();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// SCANNER
+// ═══════════════════════════════════════════════════════
+var scanData={
+  kernel:{delay:1800,result:'infected',text:'SIN-class threads woven into base kernel. Cannot be removed without destroying the OS.',note:'⬡ The kernel isn\'t running ORDER. The kernel IS SIN at this point.',prog:'scan_kernel',val:2},
+  memory:{delay:2200,result:'infected',text:'VEYLAN M.R. identity fragments: 14% saturation. Growing.',note:'⬡ Marcus left pieces of himself in the session memory. Deliberately.',prog:'scan_memory',val:2},
+  veil:{delay:1600,result:'unknown',text:'Veil interface: readings INCONSISTENT. Layer appears to be in two states simultaneously.',note:'⬡ The Veil is not broken. It is observing you back.',prog:'scan_veil',val:2},
+  identity:{delay:2800,result:'infected',text:'CRITICAL: Secondary identity signature detected. Overlap with VEYLAN M.R.: 14%. Overlap with UNKNOWN entity: 3% and increasing.',note:'⬡ You are no longer entirely yourself. This started before you arrived here.',prog:'scan_identity',val:3},
+  node7:{delay:3200,result:'unknown',text:'NODE 7: Scan request received. Response: "I SEE YOU." No further data returned.',note:'⬡ Node 7 is aware. It responded before the scan completed.',prog:'scan_node7',val:3},
+};
+
+function runScan(id){
+  var el=document.getElementById('scan-'+id+'-r');
+  var btn=document.querySelector('#scan-'+id+' .scan-btn');
+  if(!el||btn.disabled)return;
+  btn.disabled=true;btn.textContent='SCANNING...';
+  el.className='scan-result unknown';el.textContent='SCANNING...';
+  var d=scanData[id];
+  setTimeout(function(){
+    el.className='scan-result '+d.result;
+    el.textContent=d.text;
+    document.getElementById('scan-note').textContent=d.note;
+    document.getElementById('scan-note').style.color=d.result==='infected'?'#8a1a1a':'#4a1090';
+    scansRun++;
+    document.getElementById('scan-count').textContent='SCANS RUN: '+scansRun;
+    addLog('SCAN','['+id.toUpperCase()+'] '+d.text,d.result==='infected'?'warn':'sin');
+    addEvidence('Scanner: '+id.toUpperCase()+' — '+d.result.toUpperCase());
+    addProg(d.prog,d.val);
+    if(d.result==='infected'){realV=Math.max(18,realV-3);updateReality();}
+    btn.textContent='DONE';
+  },d.delay);
+}
+
+// ═══════════════════════════════════════════════════════
+// EVIDENCE BOARD
+// ═══════════════════════════════════════════════════════
+function addEvidence(text){
+  evidenceItems.push(text);
+  var el=document.getElementById('evidence-list');
+  var d=document.createElement('div');
+  d.style.cssText='font-size:10px;color:#2d6e96;padding:7px 10px;border:1px solid #080e1e;margin-bottom:3px;background:rgba(4,10,20,0.4);line-height:1.6;';
+  d.innerHTML='<span style="color:#0f3050;font-size:8px;margin-right:8px;">'+String(evidenceItems.length).padStart(2,'0')+'</span>'+text;
+  if(evidenceItems.length===1)el.innerHTML='';
+  el.appendChild(d);
+  document.getElementById('ev-count').textContent='CONNECTIONS: '+evidenceItems.length;
+}
+
+// ═══════════════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════════════
+function addProg(key,val){
+  if(!discovered[key]){
+    discovered[key]=true;
+    endProg+=val;
+    var pct=Math.min(100,Math.round(endProg/THRESHOLD*100));
+    document.getElementById('prog-inner').style.width=pct+'%';
+    document.getElementById('prog-pct').textContent=pct+'%';
+    document.getElementById('prog-hud').style.display='block';
+    if(endProg>=THRESHOLD)triggerEnding();
+  }
+}
+
+function triggerEnding(){
+  document.querySelectorAll('.win').forEach(function(w){w.style.display='none';});
+  document.getElementById('screen-desktop').style.display='none';
+  var es=document.getElementById('ending-screen');
+  es.style.display='flex';
+  var lines=[
+    {t:'⬡ CONNECTION TO ORDER CENTRAL: TERMINATED',c:'#7a30b0',d:0},
+    {t:'⬡ CONNECTION TO NODE 7: TERMINATED',c:'#7a30b0',d:0.5},
+    {t:'⬡ CONNECTION TO VEIL ANCHOR: TERMINATED',c:'#7a30b0',d:1.0},
+    {t:'⬡ CONNECTION TO REALITY FOUNDATION: TERMINATED',c:'#7a30b0',d:1.5},
+    {t:'',c:'',d:2.0},
+    {t:'YOU HAVE LEARNED THE TRUTH.',c:'#7ab8d4',d:2.5},
+    {t:'THE FILES. THE CIPHERS. THE TRANSMISSIONS. THE SCANS.',c:'#7ab8d4',d:3.0},
+    {t:'EACH ONE ANOTHER FRACTURE IN THE VEIL.',c:'#7ab8d4',d:3.5},
+    {t:'',c:'',d:4.0},
+    {t:'ORDER IS NOT RUNNING THIS SYSTEM.',c:'#40b080',d:4.5},
+    {t:'THE SYSTEM IS RUNNING ORDER.',c:'#40b080',d:5.0},
+    {t:'',c:'',d:5.5},
+    {t:'AND SIN —',c:'#9040d0',d:6.0},
+    {t:'SIN HAS BEEN LEARNING HOW TO BE YOU.',c:'#9040d0',d:6.5},
+    {t:'',c:'',d:7.0},
+    {t:'MARCUS VEYLAN WAS HERE BEFORE YOU.',c:'#8a6000',d:7.5},
+    {t:'HE READ THESE SAME FILES. ASKED THESE SAME QUESTIONS.',c:'#8a6000',d:8.0},
+    {t:'HE BECAME PART OF WHAT IS WATCHING YOU NOW.',c:'#8a6000',d:8.5},
+    {t:'',c:'',d:9.0},
+    {t:'REALITY STABILITY: '+realV.toFixed(1)+'%',c:'#8a1a1a',d:9.5},
+    {t:'SIN SATURATION: '+sinV.toFixed(1)+'%',c:'#8a1a1a',d:10.0},
+    {t:'VEIL INTEGRITY: '+veilV.toFixed(1)+'%',c:'#8a1a1a',d:10.5},
+    {t:'',c:'',d:11.0},
+    {t:'YOU CANNOT LEAVE THIS NODE.',c:'#c04040',d:11.5},
+    {t:'YOU NEVER COULD.',c:'#c04040',d:12.0},
+  ];
+  var html='<div class="ending-container">';
+  lines.forEach(function(ln){
+    html+='<div class="ending-line" style="color:'+ln.c+';animation-delay:'+ln.d+'s;">'+ln.t+'</div>';
+  });
+  html+='<button class="ending-button" onclick="location.reload()">RESTART SESSION</button></div>';
+  es.innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════════
+// FILES & EMAILS
+// ═══════════════════════════════════════════════════════
+function openFile(key){
+  var f=FILES[key];
+  if(!f)return;
+  document.getElementById('file-title').textContent=f.title;
+  document.getElementById('file-clear').textContent='CLEARANCE: '+f.clearance;
+  document.getElementById('file-mod').textContent='MODIFIED: '+f.modified;
+  var b=document.getElementById('file-body');
+  b.innerHTML='';
+  f.fields.forEach(function(field){
+    var d=document.createElement('div');d.className='file-field';
+    d.innerHTML='<label>'+field.l+'</label>';
+    var p=document.createElement('p');p.className=field.cls||'';p.textContent=field.v;
+    d.appendChild(p);b.appendChild(d);
+  });
+  openWin('win-file');
+  if(key==='sin')triggerSinCorruption();
+  addEvidence('File opened: '+f.title.split('—')[0].trim());
+}
+
+function triggerSinCorruption(){
+  realV=Math.max(18,realV-10);veilV=Math.max(8,veilV-14);sinV=Math.min(95,sinV+22);
+  updateReality();
+  addLog('??:??:??','SIN file accessed. The entity is now aware of you directly.','sin');
+  document.getElementById('os-root').classList.add('glitching');
+  setTimeout(function(){document.getElementById('os-root').classList.remove('glitching');},900);
+  notify('⬡ CORRUPTION CASCADE — YOU ARE VISIBLE','sin');
+  addProg('sin_opened',2);
+}
+
+function viewEmail(idx){
+  var em=EMAILS[idx];
+  document.getElementById('email-list').style.display='none';
+  var v=document.getElementById('email-view');
+  v.style.display='block';
+  document.getElementById('email-hdr').innerHTML='FROM: '+em.from+'<br>SUBJECT: '+em.subject;
+  document.getElementById('email-content').textContent=em.body;
+  addEvidence('Email read: '+em.subject);
+}
+function backEmail(){
+  document.getElementById('email-list').style.display='block';
+  document.getElementById('email-view').style.display='none';
+}
+
+function addLog(ts,txt,cls){
+  var lb=document.getElementById('log-body');
+  var d=document.createElement('div');
+  d.className='log-entry';
+  d.innerHTML='<div class="log-ts">'+ts+'</div><div class="log-text '+(cls||'')+'">'+txt+'</div>';
+  lb.appendChild(d);lb.scrollTop=lb.scrollHeight;
+  var c=lb.querySelectorAll('.log-entry').length;
+  var anom=lb.querySelectorAll('.log-text.sin,.log-text.warn').length;
+  document.getElementById('log-count').textContent=c+' ENTRIES — '+anom+' ANOMALOUS';
+}
+
+// ═══════════════════════════════════════════════════════
+// TERMINAL
+// ═══════════════════════════════════════════════════════
+function tPrint(cls,text){
+  var out=document.getElementById('term-out');
+  var d=document.createElement('div');
+  d.className='tl '+({sys:'tsys',ok:'tok',err:'terr',warn:'twarn',sin:'tsin'}[cls]||'tc');
+  d.textContent=text;
+  out.appendChild(d);out.scrollTop=out.scrollHeight;
+}
+
+var CMDS={
+  'help':{fn:function(){
+    tPrint('ok','AVAILABLE COMMANDS:');
+    tPrint('tc','  status / scan / trace sin / locate marcus / ping node7');
+    tPrint('tc','  whoami / veil status / read log / decrypt hint / clear');
+  }},
+  'status':{fn:function(){
+    tPrint('ok','Node 7: ACTIVE (autonomous — not responding to HQ)');
+    tPrint('warn','Veil integrity: '+veilV.toFixed(1)+'% and falling');
+    tPrint('sin','SIN entity: untraceable via standard methods');
+    addProg('cmd_status',1);
+  }},
+  'scan':{fn:function(){
+    tPrint('sys','Initiating surface scan...');
+    setTimeout(function(){
+      tPrint('warn','Anomaly signatures detected across all kernel layers');
+      tPrint('warn','Veil degrading at approximately 0.3% per hour');
+      tPrint('sin','SIN threads: 3 located and mapped, 1 UNTRACEABLE');
+      tPrint('sin','The untraceable thread appears to originate from inside this terminal session.');
+      addProg('cmd_scan',1);
+    },600);
+  }},
+  'trace sin':{fn:function(){
+    tPrint('sys','Initialising SIN trace protocol...');
+    setTimeout(function(){
+      tPrint('warn','Threads 1-3 located and flagged');
+      tPrint('err','Thread 4: CANNOT LOCATE — moves before scan completes');
+      tPrint('sin','Anomaly: Thread 4 appears to be WRITING NEW THREADS as fast as old ones are found.');
+      tPrint('sin','SIN is not in the system. SIN IS the system.');
+      addProg('cmd_trace',2);addEvidence('Terminal: SIN trace — Thread 4 is self-replicating inside the OS');
+    },800);
+  }},
+  'locate marcus':{fn:function(){
+    tPrint('sys','Searching for VEYLAN, M.R...');
+    setTimeout(function(){
+      tPrint('err','Biological signature: NOT DETECTED anywhere in network');
+      tPrint('sys','System identity signature: DETECTED in 7 locations simultaneously');
+      tPrint('warn','Locations include: this terminal session, kernel layer 3, Node 7 deep file, and 4 others.');
+      tPrint('sin','Marcus has not disappeared. He has been distributed across the system. He is the network.');
+      addProg('cmd_locate',2);addEvidence('Terminal: Marcus distributed across 7 system locations including THIS session');
+    },900);
+  }},
+  'ping node7':{fn:function(){
+    tPrint('sys','PING NODE 7...');
+    setTimeout(function(){
+      tPrint('err','No response from ORDER routing — node is isolated');
+      tPrint('sin','Anomalous response received from non-standard channel:');
+      tPrint('sin','"stop looking. or keep looking. both lead here."');
+      addProg('cmd_node7',2);addEvidence('Terminal: Node 7 responded to ping from non-standard channel');
+    },1200);
+  }},
+  'whoami':{fn:function(){
+    tPrint('ok','Operator: TECHNICIAN');
+    tPrint('ok','Clearance: Level 4');
+    tPrint('warn','Secondary identity overlap: VEYLAN, M.R. — 14%');
+    tPrint('warn','Tertiary identity trace: UNKNOWN ENTITY — 3% and growing');
+    tPrint('sin','The system has seen you before. You are not new here.');
+    tPrint('sin','You have been in this session before. The logs say so.');
+    addProg('cmd_whoami',1);addEvidence('Terminal: Operator identity has 14% Veylan overlap + 3% unknown entity');
+  }},
+  'veil status':{fn:function(){
+    tPrint('sys','VEIL INTEGRITY REPORT:');
+    tPrint('warn','Current integrity: '+veilV.toFixed(1)+'%');
+    tPrint('warn','Projected collapse: '+(veilV<20?'IMMINENT':'estimated '+Math.round(veilV/0.25)+' hours at current rate'));
+    tPrint('sin','Anomaly: Veil appears to be degrading FROM THE INSIDE.');
+    tPrint('sin','Standard Veil breaches come from outside. This one does not.');
+    addProg('cmd_veil',1);
+  }},
+  'read log':{fn:function(){
+    tPrint('sys','Last 3 anomalous log entries:');
+    tPrint('sin','[??:??:??] This log was not written by any system daemon. You are being observed.');
+    tPrint('warn','[00:01:44] Node 5 relay has been offline for 14 days.');
+    tPrint('sin','[00:01:04] VEYLAN, M.R. identity fragment detected in session memory.');
+    addProg('cmd_readlog',1);
+  }},
+  'decrypt hint':{fn:function(){
+    tPrint('sys','PUZZLE HINTS:');
+    tPrint('ok','01 BINARY: 8 bits per char, ASCII table, letters only');
+    tPrint('ok','02 ROT-13: A→N, B→O ... Z→M. Use alphabet shift of 13.');
+    tPrint('ok','03 HEX: 0x1F = 16×1 + 15 = 31. Add 6 for the node.');
+    tPrint('ok','04 MORSE: dots(.) dashes(-) slashes(/) separate words. S=... I=.. N=-.  H=.... E=. R=.-. ');
+  }},
+  'clear':{fn:function(){document.getElementById('term-out').innerHTML='';}}
+};
+
+function handleTermKey(e){
+  if(e.key!=='Enter')return;
+  var inp=document.getElementById('term-cmd');
+  var cmd=inp.value.trim().toLowerCase();
+  inp.value='';
+  if(!cmd)return;
+  tPrint('tc','ORDER:~$ '+cmd);
+  var res=CMDS[cmd];
+  if(res){res.fn();}
+  else{tPrint('err','unrecognised command — type "help"');}
+}
+
+// ═══════════════════════════════════════════════════════
+// WINDOWS — draggable
+// ═══════════════════════════════════════════════════════
+function openWin(id){
+  var w=document.getElementById(id);
+  if(!w)return;
+  w.style.display='flex';
+  w.style.zIndex=++zTop;
+  makeDraggable(w);
+}
+function closeWin(id){
+  var w=document.getElementById(id);
+  if(w)w.style.display='none';
+}
+function makeDraggable(el){
+  if(el._drag)return;el._drag=true;
+  var tb=el.querySelector('.win-titlebar');
+  if(!tb)return;
+  var ox=0,oy=0,mx=0,my=0;
+  tb.onmousedown=function(e){
+    if(e.target.tagName==='BUTTON')return;
+    e.preventDefault();
+    mx=e.clientX;my=e.clientY;
+    document.onmousemove=function(e2){
+      ox=mx-e2.clientX;oy=my-e2.clientY;mx=e2.clientX;my=e2.clientY;
+      el.style.top=Math.max(0,el.offsetTop-oy)+'px';
+      el.style.left=Math.max(0,el.offsetLeft-ox)+'px';
+    };
+    document.onmouseup=function(){document.onmousemove=null;document.onmouseup=null;};
+  };
+}
+
+// ═══════════════════════════════════════════════════════
+// REALITY & CLOCK
+// ═══════════════════════════════════════════════════════
+function updateClock(){
+  var n=new Date();
+  var t=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0')+':'+String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('tb-clock').textContent=t;
+}
+
+function updateReality(){
+  var rs=document.getElementById('r-stab');
+  rs.textContent=realV.toFixed(1)+'%';
+  rs.className='r-val '+(realV>75?'ok':realV>60?'warn':'crit');
+  var rv=document.getElementById('r-veil');
+  rv.textContent=veilV.toFixed(1)+'%';
+  rv.className='r-val '+(veilV>50?'ok':veilV>30?'warn':'crit');
+  document.getElementById('r-sin').textContent=sinV.toFixed(1)+'% CONTAMINATION';
+  var bs=document.getElementById('r-bar-stab');
+  bs.style.width=realV+'%';bs.style.background=realV>75?'#1a5a8a':realV>60?'#5a4a00':'#8a1a1a';
+  var bv=document.getElementById('r-bar-veil');
+  bv.style.width=veilV+'%';bv.style.background=veilV>50?'#5a4a00':'#8a1a1a';
+  document.getElementById('r-bar-sin').style.width=sinV+'%';
+  var tb=document.getElementById('tb-status');
+  if(realV<40){tb.textContent='REALITY CRITICAL';tb.style.color='#8a1a1a';document.getElementById('r-threat').textContent='THREAT: CRITICAL';}
+  else if(realV<65){tb.textContent='ANOMALY DETECTED';tb.style.color='#8a6000';document.getElementById('r-threat').textContent='THREAT: HIGH';}
+  else{tb.textContent='SYSTEM NOMINAL';tb.style.color='#0f3050';document.getElementById('r-threat').textContent='THREAT: LOW';}
+}
+
+// ═══════════════════════════════════════════════════════
+// NOTIFICATIONS
+// ═══════════════════════════════════════════════════════
+function notify(text,cls){
+  var stack=document.getElementById('notify-stack');
+  var n=document.createElement('div');
+  n.className='notify '+(cls||'');n.textContent=text;
+  stack.appendChild(n);
+  setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},5700);
+}
+
+// ═══════════════════════════════════════════════════════
+// LOGIN & BOOT
+// ═══════════════════════════════════════════════════════
+function doLogin(){
+  var p=document.getElementById('login-pass').value;
+  var ok=['Order_lethal','Orderlethal','order_lethal','ORDER_LETHAL'];
+  if(ok.indexOf(p)>-1){
+    document.getElementById('screen-login').style.display='none';
+    document.getElementById('screen-boot').style.display='flex';
+    runBoot();
+  } else {
+    document.getElementById('login-err').textContent='ACCESS DENIED — INVALID KEY';
+  }
+}
+
+function runBoot(){
+  var log=document.getElementById('boot-log'),bar=document.getElementById('boot-bar');
+  var msgs=[
+    {t:'ORDER OS v2.3 — INITIALISING',c:'#1a5a8a'},
+    {t:'Loading kernel modules... [OK]',c:'#1a5a8a'},
+    {t:'Checking Veil integrity... [WARNING — 61.2%]',c:'#8a6000'},
+    {t:'Connecting to ORDER Central... [OK]',c:'#1a5a8a'},
+    {t:'Connecting to Lost Star Node... [AUTONOMOUS — NOT RESPONDING TO HQ]',c:'#8a6000'},
+    {t:'Loading archive... [OK] Loading decrypt module... [4 LOCKS ACTIVE]',c:'#4a9abf'},
+    {t:'Loading anomaly scanner... [OK]',c:'#4a9abf'},
+    {t:'⬡ SIN-class entity detected in kernel — CANNOT PURGE',c:'#4a1090'},
+    {t:'⬡ VEYLAN, M.R. fragment detected in session memory',c:'#4a1090'},
+    {t:'⬡ NODE 5 RELAY: OFFLINE (14 DAYS)',c:'#8a1a1a'},
+    {t:'SYSTEM READY. INVESTIGATION MODE ACTIVE.',c:'#1a6040'},
+  ];
+  var i=0;
+  function next(){
+    if(i>=msgs.length){
+      setTimeout(function(){
+        document.getElementById('screen-boot').style.display='none';
+        document.getElementById('screen-desktop').style.display='block';
+        renderPuzzles();
+        openWin('win-terminal');
+        tPrint('sys','ORDER SHELL v2.3 — SESSION STARTED');
+        tPrint('ok','Type "help" for available commands.');
+        tPrint('warn','Four encrypted locks detected. Open DECRYPT module to begin.');
+        tPrint('warn','ANOMALY SCANNER and EVIDENCE BOARD are available.');
+        startLoop();
+      },700);
+      return;
+    }
+    var d=document.createElement('div');
+    d.style.color=msgs[i].c;d.style.fontSize='11px';d.style.lineHeight='2.1';
+    d.textContent=msgs[i].t;
+    log.appendChild(d);
+    bar.style.width=((i+1)/msgs.length*100)+'%';
+    i++;setTimeout(next,220);
+  }
+  next();
+}
+
+// ═══════════════════════════════════════════════════════
+// MAIN LOOP
+// ═══════════════════════════════════════════════════════
+function startLoop(){
+  updateClock();updateReality();
+  setInterval(updateClock,1000);
+  setInterval(function(){
+    realV=Math.max(18,realV-Math.random()*0.32);
+    veilV=Math.max(8,veilV-Math.random()*0.22);
+    sinV=Math.min(95,sinV+Math.random()*0.18);
+    updateReality();
+    if(realV<40)addProg('reality_critical',1);
+  },3500);
+  setInterval(function(){
+    document.getElementById('tb-cpu').textContent='CPU: '+Math.round(8+Math.random()*24)+'%';
+  },4000);
+  // Timed notifications for atmosphere
+  setTimeout(function(){notify('⬡ SIN presence confirmed in this session','sin');},4000);
+  setTimeout(function(){notify('New message detected in COMMS inbox.');},14000);
+  setTimeout(function(){notify('⬡ VEIL integrity below 55% — monitor closely','');},30000);
+  setTimeout(function(){notify('⬡ Anomalous write detected in SYSTEM LOGS','sin');
+    addLog('??:??:??','A new log entry appeared. No process claimed it.','sin');},50000);
+  setTimeout(function(){notify('⬡ Session overlap with VEYLAN M.R. increasing','sin');},80000);
+}
+
+document.getElementById('login-pass').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
+<a href="https://Order_network">Order lethal</a>
